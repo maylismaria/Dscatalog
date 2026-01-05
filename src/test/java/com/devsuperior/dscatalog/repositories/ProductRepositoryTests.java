@@ -17,13 +17,32 @@ public class ProductRepositoryTests {
     private ProductRepository repository;
 
     private long exintingId;
+    private long notExintingId;
     private long countTotalProducts;
+
+
 
     @BeforeEach
     void setUp() throws Exception{
         exintingId = 1L;
         countTotalProducts = 25L;
+        notExintingId = 1000L;
     }
+
+    @Test
+    public void findByIdShouldReturnNonEmptyOptionalWhenIdExists(){
+
+        Optional<Product> result = repository.findById(exintingId);
+        Assertions.assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void findByIdShouldReturnEmptyOptionalWhenIdDoesNotExists(){
+
+        Optional<Product> result = repository.findById(notExintingId);
+        Assertions.assertTrue(result.isEmpty());
+    }
+
 
     @Test
     public void saveShouldPersistWithIncrementWhenIdIsNull(){
@@ -35,7 +54,6 @@ public class ProductRepositoryTests {
 
         Assertions.assertNotNull(product.getId());
         Assertions.assertEquals(countTotalProducts + 1, product.getId());
-
 
     }
 
